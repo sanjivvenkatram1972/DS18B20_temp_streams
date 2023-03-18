@@ -2,12 +2,12 @@
 import os
 import time
 
+# import Azure IoTCentral module to load connections and relevant methods
+from azureiotcmodule import *
+
 # Python package and CLI tool to work with w1 temperature sensors like DS1822, DS18S20 & DS18B20 on the Raspberry Pi
 # pip install w1thermsensor
 from w1thermsensor import W1ThermSensor
-
-# import Azure IoTCentral module to load connections and relevant methods
-from azureiotcmodule import *
 
 # variable that lists available temperature sensors
 var_sensorcount = W1ThermSensor.get_available_sensors()
@@ -45,10 +45,13 @@ def main():
             # Ignore the first value of every sensor output (for values to stablelize)
             # we then capture the respective temp values from each sensor from the my_temp list
             if len(my_temp) > 3:
-                print("Temperature 1 :",my_temp[::2][-1])
-                print("Temperature 2 :",my_temp[1::2][-1])
-                print("Temperature 3 :",my_temp[2::2][-1])
-                print("Temperature 4 :",my_temp[3::2][-1])
+                device_client.send_telemetry({
+                    'temp1':str(my_temp[::2][-1]),
+                    'temp2':str(my_temp[1::2][-1]),
+                    'temp3':str(my_temp[2::2][-1]),
+                    'temp4':str(my_temp[3::2][-1]),
+                    'temp5':str(30),
+                })
         
         # connect to the respective sensor and add sensor id to respective variable
         var_sensor1 = W1ThermSensor(sensor_id=var_id1)
