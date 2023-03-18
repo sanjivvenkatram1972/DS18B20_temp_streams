@@ -11,14 +11,3 @@ import time
 scopeId = ''
 device_id = ''
 sasKey = ''
-
-# connect to azure IoT Central
-def main():
-    device_client = IoTCClient(device_id, scopeId, IOTCConnectType.IOTC_CONNECT_DEVICE_KEY,sasKey)
-    print(device_client)
-    device_client.connect()
-    device_client.send_property({"DevConn":50})
-    print("device connected")
-
-if __name__ == '__main__':
-    main()
